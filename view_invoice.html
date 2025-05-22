@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Factura - Sistema de Facturación</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sistema de Facturación</h1>
+            <div class="logo-container">
+                <img id="logo" src="images/logo.png" alt="Logo del Taller">
+            </div>
+        </header>
+
+        <main>
+            <div class="tabs">
+                <a href="index.html" class="tab-btn">Crear Factura</a>
+                <a href="view_invoice.html" class="tab-btn active">Ver Factura</a>
+                <a href="index.html#admin-tab-link" class="tab-btn">Administrar Registros</a>
+            </div>
+
+            <div id="view-tab" class="tab-content active">
+                <div class="search-form">
+                    <div class="form-group">
+                        <label for="searchPlate">Buscar por Placa:</label>
+                        <input type="text" id="searchPlate" required>
+                        <button id="searchBtn" class="btn">Buscar</button>
+                    </div>
+                </div>
+                <div id="invoiceView" class="invoice-preview">
+                    <!-- La factura se mostrará aquí -->
+                </div>
+                <button id="downloadPdf" class="btn" style="display: none;">Descargar PDF</button>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="view.js"></script>
+</body>
+</html> 

@@ -1,0 +1,1 @@
+Header set Content-Security-Policy "default-src 'self' https: wss: 'unsafe-inline' 'unsafe-eval' blob: data:; connect-src 'self' https: wss:; script-src 'self' https: 'unsafe-inline' 'unsafe-eval' blob: data:; frame-src 'self' https: blob: data:;" 
