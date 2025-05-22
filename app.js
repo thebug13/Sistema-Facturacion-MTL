@@ -4,7 +4,7 @@ const firebaseConfig = {
     authDomain: "facturasmtl.firebaseapp.com",
     databaseURL: "https://facturasmtl-default-rtdb.firebaseio.com",
     projectId: "facturasmtl",
-    storageBucket: "facturasmtl.firebasestorage.app",
+    storageBucket: "facturasmtl.appspot.com",
     messagingSenderId: "201300465957",
     appId: "1:201300465957:web:9cdbf3321ae2f2490ae2cc",
     measurementId: "G-K7JQ43T5KM"
@@ -19,6 +19,55 @@ try {
 }
 
 const database = firebase.database();
+
+// Google Drive API configuration
+const CLIENT_ID = '581432857229-l6qg4837tm2o1tjfqsvjjboeg1pj1lru.apps.googleusercontent.com';
+const API_KEY = 'AIzaSyBpmluzHISK-i6RHC0UwwrmcQyblp5bgk8';
+const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
+const SCOPES = 'https://www.googleapis.com/auth/drive.file';
+
+// Initialize Google Drive API
+function initGoogleDrive() {
+    gapi.load('client:auth2', () => {
+        gapi.client.init({
+            apiKey: API_KEY,
+            clientId: CLIENT_ID,
+            discoveryDocs: DISCOVERY_DOCS,
+            scope: SCOPES
+        }).then(() => {
+            console.log('Google Drive API inicializada correctamente');
+            // Listen for sign-in state changes
+            gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+            // Handle the initial sign-in state
+            updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+        }).catch(error => {
+            console.error('Error al inicializar Google Drive API:', error);
+            alert('Error al inicializar Google Drive. Por favor, recarga la página.');
+        });
+    });
+}
+
+// Update UI based on sign-in status
+function updateSigninStatus(isSignedIn) {
+    const loginButton = document.getElementById('loginButton');
+    if (isSignedIn) {
+        console.log('Usuario autenticado');
+        loginButton.style.display = 'none';
+    } else {
+        console.log('Usuario no autenticado');
+        loginButton.style.display = 'block';
+    }
+}
+
+// Función para iniciar sesión
+function handleAuthClick() {
+    gapi.auth2.getAuthInstance().signIn().then(() => {
+        console.log('Usuario autenticado correctamente');
+    }).catch(error => {
+        console.error('Error al autenticar:', error);
+        alert('Error al iniciar sesión con Google Drive: ' + error.message);
+    });
+}
 
 // Function to send WhatsApp
 async function sendWhatsApp(phoneNumber, pdfBlob) {
@@ -47,7 +96,7 @@ async function sendWhatsApp(phoneNumber, pdfBlob) {
     }
 }
 
-// Load Google Drive API
+// Wrap DOM manipulation and event listeners in DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM cargado, inicializando aplicación...');
 
