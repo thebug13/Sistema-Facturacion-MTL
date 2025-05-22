@@ -1,13 +1,13 @@
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAQAK-nOZir3MFnJBXPWH1oo7oCTbsgL8k",
-  authDomain: "facturasmtl-64b09.firebaseapp.com",
-  databaseURL: "https://facturasmtl-64b09-default-rtdb.firebaseio.com",
-  projectId: "facturasmtl-64b09",
-  storageBucket: "facturasmtl-64b09.firebasestorage.app",
-  messagingSenderId: "716795758798",
-  appId: "1:716795758798:web:d75998b549b5636cca689f",
-  measurementId: "G-BPS33779DD"
+    apiKey: "AIzaSyAQAK-nOZir3MFnJBXPWH1oo7oCTbsgL8k",
+    authDomain: "facturasmtl-64b09.firebaseapp.com",
+    databaseURL: "https://facturasmtl-64b09-default-rtdb.firebaseio.com",
+    projectId: "facturasmtl-64b09",
+    storageBucket: "facturasmtl-64b09.firebasestorage.app",
+    messagingSenderId: "716795758798",
+    appId: "1:716795758798:web:d75998b549b5636cca689f",
+    measurementId: "G-BPS33779DD"
 };
 
 // Initialize Firebase

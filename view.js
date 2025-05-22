@@ -1,14 +1,14 @@
 // Firebase configuration (Copy from app.js)
 const firebaseConfig = {
-    apiKey: "AIzaSyCAYR4gUJ2R4iHcFoktNyFwtNJ1Ppa1CdI",
-    authDomain: "facturasmtl.firebaseapp.com",
-    databaseURL: "https://facturasmtl-default-rtdb.firebaseio.com",
-    projectId: "facturasmtl",
-    storageBucket: "facturasmtl.firebasestorage.app",
-    messagingSenderId: "201300465957",
-    appId: "1:201300465957:web:9cdbf3321ae2f2490ae2cc",
-    measurementId: "G-K7JQ43T5KM"
-};
+    apiKey: "AIzaSyAQAK-nOZir3MFnJBXPWH1oo7oCTbsgL8k",
+    authDomain: "facturasmtl-64b09.firebaseapp.com",
+    databaseURL: "https://facturasmtl-64b09-default-rtdb.firebaseio.com",
+    projectId: "facturasmtl-64b09",
+    storageBucket: "facturasmtl-64b09.firebasestorage.app",
+    messagingSenderId: "716795758798",
+    appId: "1:716795758798:web:d75998b549b5636cca689f",
+    measurementId: "G-BPS33779DD"
+  };
 
 // Initialize Firebase (Copy from app.js)
 firebase.initializeApp(firebaseConfig);
