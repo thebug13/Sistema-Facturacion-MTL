@@ -21,8 +21,8 @@ try {
 const database = firebase.database();
 
 // Google Drive API configuration
-const CLIENT_ID = '581432857229-l6qg4837tm2o1tjfqsvjjboeg1pj1lru.apps.googleusercontent.com';
-const API_KEY = 'AIzaSyBpmluzHISK-i6RHC0UwwrmcQyblp5bgk8';
+const CLIENT_ID = '53135705535-q749sqbj3qigvgcebcoh3slvjn1b5e17.apps.googleusercontent.com';
+const API_KEY = 'AIzaSyD9Pt20HcuIDRzXIayNlD9wPEl5PTvH6n4';
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
 const SCOPES = 'https://www.googleapis.com/auth/drive.file';
 
