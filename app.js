@@ -71,27 +71,70 @@ function handleAuthClick() {
 
 // Function to send WhatsApp
 async function sendWhatsApp(phoneNumber, pdfBlob) {
+    // Check if Google Drive API client is loaded
+    if (!window.gapi || !window.gapi.client) {
+        console.error('Google Drive API client is not loaded.');
+        alert('La API de Google Drive aún no está lista. Por favor, espera un momento e inténtalo de nuevo.');
+        return;
+    }
+
     try {
         // Crear un nombre único para el PDF
         const fileName = `factura-${new Date().getTime()}.pdf`;
-        
-        // Crear un enlace de descarga
-        const downloadLink = document.createElement('a');
-        downloadLink.href = URL.createObjectURL(pdfBlob);
-        downloadLink.download = fileName;
-        
-        // Crear el mensaje para WhatsApp
-        const message = `Adjunto la factura de su servicio. Por favor, haga clic en el enlace para descargarla: ${downloadLink.href}`;
-        
-        // Abrir WhatsApp con el mensaje
-        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
-        
-        // Descargar el PDF automáticamente
-        downloadLink.click();
-        
+
+        // Metadata para el archivo en Google Drive
+        const fileMetadata = {
+            name: fileName,
+            mimeType: 'application/pdf',
+        };
+
+        // Crear el formulario para la subida
+        const form = new FormData();
+        form.append('metadata', new Blob([JSON.stringify(fileMetadata)], { type: 'application/json' }));
+        form.append('file', pdfBlob);
+
+        // Subir el archivo a Google Drive
+        const uploadResponse = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+            method: 'POST',
+            headers: new Headers({'Authorization': 'Bearer ' + gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token}),
+            body: form,
+        });
+
+        const uploadedFile = await uploadResponse.json();
+        console.log('Archivo subido a Google Drive:', uploadedFile);
+
+        // Obtener el enlace para compartir (hacerlo público)
+        if (uploadedFile && uploadedFile.id) {
+            await gapi.client.drive.permissions.create({
+                fileId: uploadedFile.id,
+                resource: {
+                    role: 'reader',
+                    type: 'anyone',
+                },
+            });
+
+            // Obtener la información del archivo para obtener el enlace web
+            const fileInfo = await gapi.client.drive.files.get({
+                fileId: uploadedFile.id,
+                fields: 'webViewLink',
+            });
+
+            const downloadURL = fileInfo.result.webViewLink;
+            console.log('Enlace para compartir:', downloadURL);
+
+            // Crear el mensaje para WhatsApp con la URL de descarga
+            const message = `Adjunto la factura de su servicio. Por favor, haga clic en el enlace para descargarla: ${downloadURL}`;
+
+            // Abrir WhatsApp con el mensaje
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+
+        } else {
+            throw new Error('No se pudo obtener el ID del archivo subido.');
+        }
+
     } catch (error) {
-        console.error('Error al enviar por WhatsApp:', error);
+        console.error('Error al enviar por WhatsApp (Google Drive):', error);
         alert('Error al enviar por WhatsApp: ' + error.message);
     }
 }
