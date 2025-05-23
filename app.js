@@ -205,11 +205,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const priceInput = partItem.querySelector('.part-price');
         const subtotalSpan = partItem.querySelector('.part-subtotal');
         const removeBtn = partItem.querySelector('.remove-part');
+        const partNameInput = partItem.querySelector('.part-name');
+
+        // Convert part name to uppercase on input
+        partNameInput.addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
 
         const calculateSubtotal = () => {
             const quantity = parseFloat(quantityInput.value) || 0;
             const price = parseFloat(priceInput.value) || 0;
-            subtotalSpan.textContent = (quantity * price).toFixed(2);
+            subtotalSpan.textContent = `COP$${(quantity * price).toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
         };
 
         quantityInput.addEventListener('input', calculateSubtotal);
@@ -247,6 +253,14 @@ document.addEventListener('DOMContentLoaded', () => {
         value = formatPlate(value);
         e.target.value = value;
     });
+
+    // Convert model input to uppercase on input
+    const modelInput = document.getElementById('model');
+    if (modelInput) {
+        modelInput.addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+    }
 
     // Create dialog elements
     const dialogOverlay = document.createElement('div');
@@ -318,15 +332,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const partName = item.querySelector('.part-name').value;
                 const quantity = parseFloat(item.querySelector('.part-quantity').value) || 0;
                 const price = parseFloat(item.querySelector('.part-price').value) || 0;
-                const subtotal = parseFloat(item.querySelector('.part-subtotal').textContent) || 0;
                 
-                console.log('Parte encontrada:', { partName, quantity, price, subtotal });
+                console.log('Parte encontrada:', { partName, quantity, price });
                 
                 parts.push({
                     name: partName,
                     quantity: quantity,
                     price: price,
-                    subtotal: subtotal
+                    subtotal: quantity * price
                 });
             });
 

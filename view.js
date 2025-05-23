@@ -76,7 +76,7 @@ function displayInvoices(invoices) {
     invoiceView.innerHTML = invoices.map((invoice, index) => `
         <div class="invoice-container">
             <div class="invoice-header">
-                <img src="images/logo.png" alt="Logo del Taller" class="invoice-logo">
+                <img src="https://i.postimg.cc/25fBbNkQ/logonegro2.png" alt="Logo del Taller" class="invoice-logo">
                 <h2>Factura de Repuestos #${index + 1}</h2>
                 <p>Fecha: ${new Date(invoice.date).toLocaleDateString()}</p>
                 <p>Placa: ${invoice.plate}</p>
@@ -130,49 +130,94 @@ function generateSinglePDF(invoice) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
-        // Add header
-        doc.setFontSize(20);
-        doc.text('Factura de Repuestos', 105, 20, { align: 'center' });
-        
-        doc.setFontSize(12);
-        doc.text(`Fecha: ${new Date(invoice.date).toLocaleDateString()}`, 10, 40);
-        doc.text(`Placa: ${invoice.plate}`, 10, 50);
-        doc.text(`Marca: ${invoice.brand || 'N/A'}`, 10, 60);
-        doc.text(`Modelo: ${invoice.model || 'N/A'}`, 10, 70);
+        // Add logo and workshop info
+        const logoUrl = 'https://i.postimg.cc/25fBbNkQ/logonegro2.png';
+        const workshopName = 'Motos Loaiza';
+        const workshopEmail = 'tecnipunto75@gmail.com';
+        const workshopPhone = '+57 3103963556';
 
-        // Add table
-        doc.autoTable({
-            startY: 80, // Adjust startY to accommodate new fields
-            head: [['Repuesto', 'Cantidad', 'Precio Unitario', 'Subtotal']],
-            body: invoice.parts.map(part => [
-                part.name,
-                part.quantity,
-                `$${part.price.toFixed(2)}`,
-                `$${part.subtotal.toFixed(2)}`
-            ]),
-            foot: [['', '', 'Total', `$${invoice.total.toFixed(2)}`]]
-        });
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.src = logoUrl;
 
-        // Intentar agregar el logo desde la URL proporcionada
-        const logo = new Image();
-        logo.crossOrigin = 'Anonymous'; // Esto es importante para CORS
-        logo.src = 'https://i.postimg.cc/25fBbNkQ/logonegro2.png';
-        
-        logo.onload = function() {
-            // Calcular las dimensiones proporcionales
-            const maxHeight = 20; // Altura máxima deseada en mm
-            const ratio = logo.width / logo.height;
-            const width = maxHeight * ratio;
-            
-            // Agregar la imagen con las dimensiones calculadas
-            doc.addImage(logo, 'PNG', 10, 10, width, maxHeight);
+        img.onload = function() {
+            const imgWidth = 20; // Reduced desired logo width in mm
+            const imgHeight = (img.height * imgWidth) / img.width;
+            doc.addImage(img, 'PNG', 10, 10, imgWidth, imgHeight);
+
+            doc.setFontSize(10);
+            doc.text(workshopName, 50, 15);
+            doc.text(`Email: ${workshopEmail}`, 50, 20);
+            doc.text(`Celular: ${workshopPhone}`, 50, 25);
+
+            // Generate and save PDF content after image is loaded
+            generatePdfContent(doc, invoice, 40 + imgHeight); // Adjust startY based on new smaller height
             doc.save(`factura-${invoice.plate}-${new Date(invoice.date).toLocaleDateString()}.pdf`);
         };
-         logo.onerror = function() {
-             console.log('No se pudo agregar el logo al PDF desde la URL: https://i.postimg.cc/25fBbNkQ/logonegro2.png');
-             // Guardar el PDF sin la imagen si hay un error
-             doc.save(`factura-${invoice.plate}-${new Date(invoice.date).toLocaleDateString()}.pdf`);
+
+        img.onerror = function() {
+            console.log('No se pudo agregar el logo al PDF desde la URL: https://i.postimg.cc/25fBbNkQ/logonegro2.png');
+            // If logo fails to load, generate PDF without it
+            generatePdfContent(doc, invoice);
         };
+
+         // Function to generate PDF content (excluding logo which is async)
+        function generatePdfContent(doc, invoice, startY) {
+            let y = startY;
+
+            // Ensure a minimum starting position, allowing space for header/logo if they load
+            if (y < 35) { // Start at least 35mm from the top
+                y = 35;
+            }
+
+            doc.setFontSize(12);
+            doc.text(`Fecha: ${new Date(invoice.date).toLocaleDateString()}`, 10, y); y += 7;
+            doc.text(`Placa: ${invoice.plate}`, 10, y); y += 7;
+            doc.text(`Marca: ${invoice.brand || 'N/A'}`, 10, y); y += 7;
+            doc.text(`Modelo: ${invoice.model || 'N/A'}`, 10, y); y += 15; // Space after details
+
+            // Manually add Parts List with lines
+            doc.setFontSize(10);
+            const partHeight = 8; // Total height allocated for each part row (text + padding)
+            const lineThickness = 0.1; // Approximate line thickness in mm
+
+            invoice.parts.forEach((part, index) => {
+                if (index > 0) {
+                    y += partHeight / 2; // Space before line
+                    doc.line(10, y, 200, y);
+                    y += partHeight / 2; // Space after the line
+                }
+
+                // Add part details - text baseline will be relative to current y
+                const textY = y + (partHeight / 2); // Position text vertically in the middle of the allocated height
+                doc.text(part.name, 15, textY); // Description
+                doc.text(part.quantity.toString(), 100, textY, { align: 'center' }); // Cantidad
+                doc.text(`COP$${part.price.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, 150, textY, { align: 'right' }); // Precio Unitario
+                doc.text(`COP$${part.subtotal.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, 200, textY, { align: 'right' }); // Subtotal
+
+                // Move y down by the total height for this part row
+                y += partHeight;
+            });
+
+            // Draw a line after the last part item
+            y += partHeight / 2; // Space before final line
+            doc.line(10, y, 200, y);
+            y += 10; // Space after the last line before total
+
+            // Add Total
+            doc.setFontSize(12);
+            doc.text(`Total: COP$${invoice.total.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, 200, y, { align: 'right' });
+
+            // Position copyright notice relative to the bottom
+            const pageHeight = doc.internal.pageSize.height;
+            const pageWidth = doc.internal.pageSize.width;
+            const copyrightY = pageHeight - 10; // 10mm from the bottom
+            doc.setFontSize(10);
+            doc.text('© 2025 Motos Loaiza | Powered by Felipe Loaiza', pageWidth / 2, copyrightY, { align: 'center' });
+
+            // Save PDF
+            doc.save(`factura-${invoice.plate}-${new Date(invoice.date).toLocaleDateString()}.pdf`);
+        }
 
     } catch (error) {
         console.error('Error al generar el PDF:', error);
