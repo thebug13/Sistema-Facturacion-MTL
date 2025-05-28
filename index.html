@@ -9,6 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <!-- jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -27,6 +28,7 @@
                 <button class="tab-btn active" data-tab="create">Crear Factura</button>
                 <a href="view_invoice.html" class="tab-btn">Ver Factura</a>
                 <button class="tab-btn" data-tab="admin">Administrar Registros</button>
+                <button id="logoutBtn" class="btn">Cerrar Sesión</button>
             </div>
 
             <div id="create-tab" class="tab-content active">
