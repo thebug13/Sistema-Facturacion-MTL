@@ -57,7 +57,7 @@ if (loginForm) {
                         message = 'Formato de email inválido.';
                         break;
                     default:
-                        message = `Error: ${error.message}`; // Display generic error if specific one is not handled
+                        message = 'Ocurrió un error al iniciar sesión. Por favor, inténtalo de nuevo.'; // A more user-friendly generic message
                 }
                 errorMessage.textContent = message;
             });
