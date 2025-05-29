@@ -359,7 +359,7 @@ select {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url('../img/hero-bg.jpg');
+    background-image: url('https://i.postimg.cc/1twVHTsh/hero-bg.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
