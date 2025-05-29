@@ -1,3 +1,6 @@
+// login.js
+console.log('login.js script started.');
+
 // Firebase configuration (Copy from app.js)
 const firebaseConfig = {
     apiKey: "AIzaSyAQAK-nOZir3MFnJBXPWH1oo7oCTbsgL8k",
@@ -25,8 +28,8 @@ if (loginForm) {
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
+        const emailInput = document.getElementById('loginEmail');
+        const passwordInput = document.getElementById('loginPassword');
 
         const email = emailInput.value;
         const password = passwordInput.value;

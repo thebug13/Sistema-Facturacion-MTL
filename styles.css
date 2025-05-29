@@ -350,4 +350,136 @@ select {
 
 .btn-primary {
     background-color: var(--secondary-color);
+}
+
+/* Login Page Styles */
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('https://raw.githubusercontent.com/thebug13/MotosLoaiza/refs/heads/main/img/hero-bg.jpg?token=GHSAT0AAAAAADEKHCANAPSNUK7ZB5J4VG2W2BYR7BQ'); /* Updated background image URL */
+    background-size: cover;
+    background-position: center;
+    position: relative; /* Needed for pseudo-element overlay */
+    isolation: isolate; /* Creates a new stacking context */
+}
+
+.login-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* Dark overlay */
+    z-index: -1; /* Behind the content */
+}
+
+.login-card {
+    background-color: rgba(255, 255, 255, 0.15); /* Translucent white background */
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    color: #ffffff; /* White text for better contrast on dark background */
+    max-width: 400px;
+    width: 90%;
+}
+
+.login-card h2 {
+    margin-bottom: 30px;
+    color: #ffffff;
+    font-size: 2em;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.input-group input {
+    width: 100%; /* Make input take full width */
+    padding: 10px 10px 10px 40px; /* Keep padding for icon */
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5); /* Underline style */
+    background: transparent;
+    color: #ffffff;
+    font-size: 1em;
+    outline: none;
+}
+
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.input-group .icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 0.9em;
+}
+
+.options label {
+    color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+}
+
+.options input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.options a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+}
+
+.options a:hover {
+    text-decoration: underline;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 25px; /* Pill shape button */
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #5a2a8c; /* A color that stands out, e.g., purple from the image */
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #ffffff;
+}
+
+.register-link {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.register-link a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
 } 

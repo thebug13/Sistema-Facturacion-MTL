@@ -3,28 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - Sistema de Facturación</title>
+    <title>Login - Sistema de Facturación</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="login-container">
-            <h2>Iniciar Sesión</h2>
+
+    <div class="login-container">
+        <div class="login-card">
+            <h2>Login</h2>
             <form id="loginForm">
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" required>
+                <div class="input-group">
+                    <input type="email" id="loginEmail" placeholder="Username" required>
+                    <span class="icon"><i class="fas fa-user"></i></span>
                 </div>
-                <div class="form-group">
-                    <label for="password">Contraseña:</label>
-                    <input type="password" id="password" required>
+                <div class="input-group">
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                     <span class="icon"><i class="fas fa-lock"></i></span>
                 </div>
-                <button type="submit" class="btn primary">Ingresar</button>
-                <p id="errorMessage" style="color: red; margin-top: 10px;"></p>
+
+                <button type="submit" class="login-btn">Login</button>
             </form>
+            <div id="errorMessage" style="color: red; margin-top: 15px;"></div>
+            
         </div>
     </div>
 
